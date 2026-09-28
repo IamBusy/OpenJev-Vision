@@ -35,7 +35,6 @@ def test_v02_frozen_groups_and_paired_reference():
 
 
 def test_qwen_prompt_ignores_private_keys_and_enforces_label_budget():
-    pytest.importorskip("peft")
     from openjev.qwen import prompt
     from openjev.schema import Question
 

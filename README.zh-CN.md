@@ -81,14 +81,19 @@ v0.3 使用 Qwen3-0.6B，同一状态只编码一次，每个问题和候选独�
 
 ## 开发与复现
 
+视觉快速开始的环境可以运行数据及 CPU 单元测试，不依赖 PEFT。
+开发所有后端时，安装完整的贡献者环境：
+
 ```bash
+uv sync --frozen --extra vision --extra dev --extra qwen
 uv run --no-sync pytest -q
 uv run --no-sync ruff check src tests scripts
 uv build
 ```
 
 [复现指南](docs/REPRODUCING.md)说明了公开数据下载、固定场景快照、训练选择、
-校准和评测流程。CI 覆盖微型随机模型的缓存前向及梯度等价检查；需要完整模型和
+校准和评测流程。CI 分别验证不含 PEFT 的 `vision` + `dev` 环境和完整依赖环境，
+两者都覆盖微型随机模型的缓存前向及梯度等价检查；需要完整模型和
 数据的集成测试，在缺少本地文件时会明确跳过。
 
 代码使用 Apache-2.0。公共数据保留各自许可证，详见[来源与署名](THIRD_PARTY.md)。

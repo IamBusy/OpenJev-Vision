@@ -6,8 +6,17 @@ permissions:
   contents: read
 jobs:
   cpu:
+    name: cpu (${{ matrix.environment }})
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - environment: vision-dev
+            extras: --extra vision --extra dev
+          - environment: all-extras
+            extras: --extra vision --extra dev --extra qwen
     env:
       HF_HUB_OFFLINE: '1'
       TRANSFORMERS_OFFLINE: '1'
@@ -19,7 +28,10 @@ jobs:
           version: '0.9.18'
           python-version: '3.12'
           enable-cache: true
-      - run: uv sync --frozen --extra dev --extra qwen --extra vision
+      - run: uv sync --frozen ${{ matrix.extras }}
+      - name: Verify the documented vision environment excludes PEFT
+        if: matrix.environment == 'vision-dev'
+        run: uv run --no-sync python -c "import importlib.util; assert importlib.util.find_spec('peft') is None"
       - run: uv run --no-sync ruff check src tests scripts marketing
       - run: uv run --no-sync ruff format --check src tests scripts marketing
       - run: uv run --no-sync pytest -q -ra

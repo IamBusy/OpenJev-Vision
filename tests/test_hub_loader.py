@@ -2,8 +2,6 @@ from pathlib import Path
 
 import pytest
 
-pytest.importorskip("peft")
-
 from openjev.branch_model import BranchDecision
 from openjev.io import sha256, write_json
 

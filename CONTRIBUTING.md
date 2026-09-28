@@ -5,7 +5,11 @@ reproducibility failures, incorrect metrics, contract bugs and measured model
 improvements. Include a minimal example, version, device and expected behavior.
 Do not include API keys, private data or full model-service traces.
 
-Install with `uv sync --frozen --extra dev --extra qwen`. Before a pull request:
+For the full contributor environment, install with
+`uv sync --frozen --extra vision --extra dev --extra qwen`. Vision/data-only work
+can use `uv sync --frozen --extra vision --extra dev`; Qwen model construction
+requires the additional `qwen` extra. CI tests both installations.
+Before a pull request:
 
 ```bash
 uv run --no-sync ruff check src tests scripts marketing

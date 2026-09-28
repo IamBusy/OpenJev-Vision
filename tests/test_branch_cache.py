@@ -1,9 +1,6 @@
 import copy
 
-import pytest
 import torch
-
-pytest.importorskip("peft")
 from transformers import Qwen3Config, Qwen3Model
 
 from openjev.branch_model import score_token_branches

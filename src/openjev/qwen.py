@@ -6,7 +6,6 @@ from types import SimpleNamespace
 
 import numpy as np
 import torch
-from peft import LoraConfig, PeftModel, get_peft_model
 from transformers import AutoModelForCausalLM, AutoTokenizer
 
 from .io import seed_everything
@@ -49,6 +48,17 @@ def prompt(tokenizer, state, question: Question):
 
 class QwenDecision:
     def __init__(self, root: Path, config, adapter=None, training=False):
+        try:
+            from peft import LoraConfig, PeftModel, get_peft_model
+        except ModuleNotFoundError as error:
+            if error.name != "peft":
+                raise
+            raise ModuleNotFoundError(
+                "Qwen models require the 'qwen' extra. From a source checkout, run "
+                "`uv sync --frozen --extra vision --extra dev --extra qwen`.",
+                name="peft",
+            ) from error
+
         self.root = root
         self.config = config
         self.has_adapter = adapter is not None or training

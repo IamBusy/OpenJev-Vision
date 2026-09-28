@@ -7,7 +7,6 @@ from pathlib import Path
 
 import numpy as np
 import torch
-from peft import LoraConfig, PeftModel, get_peft_model
 from safetensors.torch import load_file, save_file
 from torch import nn
 from transformers import AutoModelForCausalLM, AutoTokenizer, DynamicCache
@@ -129,6 +128,17 @@ class BranchDecision:
     def __init__(
         self, root: Path, config=None, checkpoint=None, training=False, base_model_path=None
     ):
+        try:
+            from peft import LoraConfig, PeftModel, get_peft_model
+        except ModuleNotFoundError as error:
+            if error.name != "peft":
+                raise
+            raise ModuleNotFoundError(
+                "Qwen models require the 'qwen' extra. From a source checkout, run "
+                "`uv sync --frozen --extra vision --extra dev --extra qwen`.",
+                name="peft",
+            ) from error
+
         self.root = root = Path(root)
         self.default_temperatures = None
         if checkpoint:

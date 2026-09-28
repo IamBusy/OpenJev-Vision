@@ -182,15 +182,20 @@ not a drop-in replacement for TypeSafe's API.
 
 ## Development and reproduction
 
+The vision quick start supports the data and CPU unit tests without PEFT.
+For development across all backends, install the full contributor environment:
+
 ```bash
+uv sync --frozen --extra vision --extra dev --extra qwen
 uv run --no-sync pytest -q
 uv run --no-sync ruff check src tests scripts marketing
 uv run --no-sync ruff format --check src tests scripts marketing
 uv build
 ```
 
-CI runs CPU tests with a tiny randomly initialized Qwen model, including cached
-versus recomputed outputs and gradients. Full model/data integration tests run
+CI tests both `vision` + `dev` (without PEFT) and the full environment above.
+The tiny randomly initialized Qwen cache test, including forward and gradient
+equivalence, runs in both. Full model/data integration tests run
 when local artifacts are present and otherwise skip explicitly. Rebuilding the
 frozen data needs public source downloads but no provider credentials; see the
 [complete reproduction guide](docs/REPRODUCING.md).

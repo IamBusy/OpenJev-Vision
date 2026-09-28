@@ -5,7 +5,6 @@ import pytest
 
 
 def test_world_rendering_replays_without_credentials_or_provider_calls(monkeypatch, tmp_path):
-    pytest.importorskip("peft")
     from openjev.data_v03 import build_worlds, render_worlds
 
     root = Path(__file__).resolve().parents[1]
